@@ -36,6 +36,11 @@ Additionally, it provides a plotting function (`plot_posture_data_grouped`) that
   - Returns either a Matplotlib figure or an in-memory PNG buffer (for web serving).
 
 ---
+## Authors
+-  Colin
+-  Rithvik
+-  Enes
+-  Varun
 
 ## Dependencies
 Install the required Python libraries:
