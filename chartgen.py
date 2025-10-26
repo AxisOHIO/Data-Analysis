@@ -251,6 +251,9 @@ summary_df['posture_score'] = (summary_df['posture_score_raw'] * 9 + 1).round(2)
 #THE WEBSITE NEEDS RADIO BUTTON INPUT FROM THE USER
 #BASED ON THE INPUT, THE FUNCTION WILL RETURN A DIFFERENT GRAPH
 
+import matplotlib.pyplot as plt
+import numpy as np
+
 def plot_posture_data_grouped(timeframe=7, plot_type=True, return_image=False):
     global summary_df
     df = summary_df.sort_values('date').tail(timeframe)
@@ -266,7 +269,37 @@ def plot_posture_data_grouped(timeframe=7, plot_type=True, return_image=False):
 
     # Explicit numeric positions for bars
     dates = np.arange(len(df))
-    width = 0.35  # space between bars
+    num_entries = len(df)
+    num_days = 1
+    width = 0.35
+    if timeframe == 7 and plot_type == False:
+        if(num_entries >= 7):
+            width = 0.25
+            num_days = 7
+        else:
+            width = 0.33 - num_entries * 0.01
+            num_days = num_entries
+    elif timeframe == 7:
+        if(num_entries >= 7):
+            width = 0.25
+            num_days = 7
+        else:
+            width = 0.33 - num_entries * 0.01
+            num_days = num_entries
+    elif timeframe == 30 and plot_type:
+        if(num_entries >= 30):
+            width = 0.25
+            num_days = 30
+        else:
+            width = 0.55 - num_entries * 0.01
+            num_days = num_entries
+    elif timeframe  == 30 and plot_type == False:
+        if(num_entries >= 30):
+            width = 0.25
+            num_days = 30
+        else:
+            width = 0.55 - num_entries * 0.01
+            num_days = num_entries
 
     fig, ax = plt.subplots(figsize=(10,5))
 
@@ -279,7 +312,7 @@ def plot_posture_data_grouped(timeframe=7, plot_type=True, return_image=False):
         if timeframe == 1:
             ax.set_title(f'Good vs Bad Posture over the Last Day')
         else:
-            ax.set_title(f'Good vs Bad Posture — Last {timeframe} Days')
+            ax.set_title(f'Good vs Bad Posture — Last {num_days} Days')
 
     else:
         # Side-by-side bars for Pitch / Roll / Both
@@ -290,12 +323,12 @@ def plot_posture_data_grouped(timeframe=7, plot_type=True, return_image=False):
         if timeframe == 1:
             ax.set_title(f'Good vs Bad Posture over the Last Day')
         else:
-            ax.set_title(f'Good vs Bad Posture — Last {timeframe} Days')
+            ax.set_title(f'Good vs Bad Posture — Last {num_days} Days')
 
     # Clean up axis
     ax.set_xticks(dates)
     df['date'] = pd.to_datetime(df['date'], errors='coerce')
-    ax.set_xticklabels(df['date'].dt.strftime('%Y-%m-%d'), rotation=45)
+    ax.set_xticklabels(df['date'].dt.strftime('%Y-%m-%d'), rotation=90)
     ax.set_xlabel('Date')
     ax.legend()
     plt.tight_layout()
@@ -310,6 +343,7 @@ def plot_posture_data_grouped(timeframe=7, plot_type=True, return_image=False):
     else:
         plt.show()
         return fig
+
     
 
     # Plot 1 — Good/Bad distribution for last 7 days
