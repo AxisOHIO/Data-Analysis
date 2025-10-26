@@ -1,10 +1,10 @@
 #import numpy as np
 import pandas as pd
-import numpy as np
-num_rows = 250
+
+num_rows = 1500
 
 # Random dates over a week
-dates = pd.date_range(start='2025-10-25', periods=7, freq='D')
+dates = pd.date_range(start='2025-10-25', periods=40, freq='D')
 timestamps = np.random.choice(dates, size=num_rows) + pd.to_timedelta(np.random.randint(0, 24*60*60, size=num_rows), unit='s')
 
 # Random pitch and roll in degrees (example ranges)
